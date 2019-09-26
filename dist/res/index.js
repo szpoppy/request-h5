@@ -1,0 +1,1 @@
+"use strict";Vue.use(VueUnicom);var app=new Vue({el:"#app",data:{},methods:{}});
