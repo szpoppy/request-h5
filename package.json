@@ -1,6 +1,6 @@
 {
     "name": "request-h5",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "支持短路径的ajax",
     "main": "dist/lib/ajax.js",
     "scripts": {

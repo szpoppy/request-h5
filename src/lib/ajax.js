@@ -4,11 +4,11 @@
         module.exports = factory();
         return;
     }
-    if (typeof define === "function" && define.amd) {
-        define(factory);
+    if (typeof global.define === "function" && global.define.amd) {
+        global.define(factory);
         return;
     }
-    global.VueUnicom = factory();
+    global.requestFn = factory();
 })(window, function() {
     "use strict";
 
