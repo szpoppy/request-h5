@@ -590,7 +590,7 @@
             if (data === undefined) {
                 data = this[this.jsonKey || "json"];
             }
-            if (property) {
+            if (property && data) {
                 property.split(".").forEach(function(item) {
                     data = data[item];
                     if (data == null) {
@@ -849,8 +849,8 @@
 
         //
         emit(type, ...args) {
-            emitEvent(this.events[type], this, args);
             emitEvent(this.root.events[type], this, args);
+            emitEvent(this.events[type], this, args);
             return this;
         }
 
@@ -878,6 +878,10 @@
             this.events = {};
 
             opt && this.setConf(opt);
+        }
+
+        static setConf(opt = {}) {
+            assign(defConf, getConf(opt));
         }
 
         // 设置默认
