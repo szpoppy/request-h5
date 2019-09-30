@@ -41,7 +41,7 @@
 | progress | 上传进度  | event |
 | open     | send 之前 | req   |
 
-##　添加一个分组
+## 添加一个分组
 
 > let ajaxOne = new ajax.Group()
 
