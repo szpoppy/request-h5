@@ -130,6 +130,17 @@ ajaxOne.get(
 );
 ```
 
-# API
+## options 支持参数说明
 
-> 待续...
+| 名称     | 说明                                          | 默认值      |
+| -------- | --------------------------------------------- | ----------- |
+| baseURL  | 基础 url 路径                                 | 空字符串    |
+| paths    | 短路径(替换 url 中的短路径)                   | 空对象      |
+| useFetch | 是否使用 fetch,如果浏览器不支持，则降级为 xhr | true        |
+| url      | 请求 url，支持短路径                          | 空字符串    |
+| method   | 请求方法                                      | GET         |
+| dataType | 请求数据格式                                  | querystring |
+| resType  | 返回数据格式                                  | json        |
+| param    | 请求参数                                      | null        |
+| header   | 请求头设置                                    | null        |
+| jsonpKey | jsonp 请求是需要的 key                        | callback    |
