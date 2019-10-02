@@ -305,7 +305,7 @@
         let param = req.param;
 
         // callback
-        let key = req.jsonpKey || this.jsonpKey;
+        let key = req.jsonpKey;
         // jsonp回调字符串
         let backFunKey = param[key];
         if (!backFunKey) {
@@ -336,7 +336,7 @@
         window[backFunKey] = backFun;
 
         // 所有参数都放在url上
-        let url = fixedURL(req.url, param);
+        let url = fixedURL(req.url, getParamString(param, req.dataType));
 
         // 发送事件出发
         this.emit("send", req);
@@ -614,23 +614,17 @@
 
     // 发送数据整理
     function requestSend(param, req) {
+        // console.log("xxxx", param, req);
         if (req.outFlag) {
             // 已经中止
             return;
         }
 
         // 方法
-        req.method = String(this.method || "get").toUpperCase();
-
-        // url
-        req.url = this.url;
-
-        // 缓存，只针对get请求
-        req.cache = this.cache;
+        req.method = String(req.method || "get").toUpperCase();
 
         // 请求类型
-        let dataType = (req.dataType = String(this.dataType || "").toLowerCase());
-        req.resType = this.resType;
+        let dataType = (req.dataType = String(req.dataType || "").toLowerCase());
 
         // callback中接收的 res
         let res = Object.create(ajaxRes);
@@ -646,7 +640,7 @@
 
         if (isFormData) {
             // FormData 将参数都添加到 FormData中
-            forEach(this.param, function(value, key) {
+            forEach(req.param, function(value, key) {
                 if (param.has(key)) {
                     param.append(key, value);
                 }
@@ -657,11 +651,8 @@
                 // 参数为字符串，自动格式化为 object，后面合并后在序列化
                 param = req.dataType == "json" ? JSON.parse(param) : qs.parse(param);
             }
-            req.param = assign({}, this.param, param || {});
+            assign(req.param, param || {});
         }
-
-        // 合并默认的header
-        req.header = assign({}, this.header);
 
         // 出发open事件
         this.emit("open", req);
@@ -680,12 +671,12 @@
 
         // 短路径替换
         req.url = req.url.replace(/^(\w+):\/*/, (s0, s1) => {
-            return this.paths[s1] || s0;
+            return req.paths[s1] || s0;
         });
 
-        if (this.baseURL && !/^(:?http(:?s)?:)?\/\//.test(req.url)) {
+        if (req.baseURL && !/^(:?http(:?s)?:)?\/\//.test(req.url)) {
             // 有baseURL 并且不是全量地址
-            req.url = this.baseURL + req.url;
+            req.url = req.baseURL + req.url;
         }
 
         // 是否跨域, 获全路径后，比对
@@ -697,7 +688,7 @@
             return;
         }
 
-        if (hasFetch && this.useFetch && !this.hasEvent("progress")) {
+        if (hasFetch && req.useFetch && !this.hasEvent("progress")) {
             //fetch 存在 fetch 并且无上传或者进度回调 只能异步
             fetchSend.call(this, res);
             return;
@@ -711,9 +702,10 @@
     const defConf = {
         useFetch: true,
         resType: "json",
-        jsonpKey: "callback"
+        jsonpKey: "callback",
+        cache: true
     };
-    function getConf({ baseURL, paths, useFetch, url, method, dataType, resType, param = {}, header = {}, jsonpKey } = {}) {
+    function getConf({ baseURL, paths, useFetch, url, method, dataType, resType, param = {}, header = {}, jsonpKey } = {}, cache, withCredentials) {
         let val = {};
 
         if (baseURL) {
@@ -760,6 +752,14 @@
         if (jsonpKey) {
             val.jsonpKey = jsonpKey;
         }
+
+        if (typeof cache == "boolean") {
+            val.cache = cache;
+        }
+
+        if (typeof withCredentials == "boolean") {
+            val.withCredentials = withCredentials;
+        }
         return val;
     }
 
@@ -785,7 +785,7 @@
         constructor(parent, opt) {
             this.root = parent;
             this.events = {};
-            assign(this, parent.conf, getConf(opt));
+            this.conf = assign({}, parent.conf, getConf(opt));
         }
 
         // 设置参数
@@ -839,9 +839,9 @@
             }
 
             // 制造 req
-            let req = (this._req = {
-                root: this
-            });
+            let req = Object.create(this.conf);
+            req.root = this;
+            this._req = req;
             // 异步，settime 部分参数可以后置设置生效
             setTimeout(requestSend.bind(this, param || {}, req), 1);
             return this;
@@ -961,5 +961,6 @@
         getUUID,
         getFullUrl
     };
+
     return val;
 });

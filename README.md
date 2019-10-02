@@ -144,3 +144,27 @@ ajaxOne.get(
 | param    | 请求参数                                      | null        |
 | header   | 请求头设置                                    | null        |
 | jsonpKey | jsonp 请求是需要的 key                        | callback    |
+| cache           | get 请求是否有缓存                    | true                         |
+| withCredentials | 跨域带上 cookie                       | false                        |
+
+## 事件参数 req 说明
+
+| 名称            | 说明                                  | 默认值                       |
+| --------------- | ------------------------------------- | ---------------------------- |
+| outFlag         | ajax 已经中止，内部使用               | false                        |
+| method          | 请求方法                              | GET                          |
+| url             | 请求 url                              | 空字符串                     |
+| cache           | get 请求是否有缓存                    | true                         |
+| resType         | 请求类型                              | 空字符串，默认为 querystring |
+| isFormData      | 是否为 FormData 数据，针对非 GET 请求 | 按照 param 类型数据自动判定  |
+| param           | 请求参数                              | 空对象                       |
+| header          | 请求头                                | 空对象                       |
+| baseURL         | 基础 url 路径                         | 空字符串                     |
+| isCross         | 是否跨域                              | 按照 url 路径自动判断        |
+| xhr             | xhr 请求的对象                        |                              |
+| isXDR           | IE8，跨域是使用的对象                 | 表示 xhr 就是 xdr            |
+| withCredentials | 跨域带上 cookie                       | false                        |
+
+##　事件参数 res 说明
+
+> 待续...
