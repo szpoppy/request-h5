@@ -299,7 +299,7 @@
 
     // ==============================================jsonp==============================================
     function jsonpSend(res) {
-        let req = res.forReq;
+        let req = res.withReq;
 
         // 参数
         let param = req.param;
@@ -350,7 +350,7 @@
      * fetch 发送数据
      */
     function fetchSend(res) {
-        let req = res.forReq;
+        let req = res.withReq;
         // 方法
         let method = String(req.method || "GET").toUpperCase();
 
@@ -453,7 +453,7 @@
     }
     // xhr的onload事件
     function onload(res) {
-        let req = res.forReq;
+        let req = res.withReq;
         let xhr = req.xhr;
         // req.outFlag 为true 表示，本次ajax已经中止，无需处理
         if (xhr && !req.outFlag) {
@@ -504,7 +504,7 @@
      * @returns {ajax}
      */
     function xhrSend(res) {
-        let req = res.forReq;
+        let req = res.withReq;
         // XHR
         req.xhr = createXHR(req.isCross);
 
@@ -628,7 +628,7 @@
 
         // callback中接收的 res
         let res = Object.create(ajaxRes);
-        res.forReq = req;
+        res.withReq = req;
         res.root = this;
 
         // 是否为 FormData

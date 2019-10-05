@@ -132,20 +132,20 @@ ajaxOne.get(
 
 ## options 支持参数说明
 
-| 名称     | 说明                                          | 默认值      |
-| -------- | --------------------------------------------- | ----------- |
-| baseURL  | 基础 url 路径                                 | 空字符串    |
-| paths    | 短路径(替换 url 中的短路径)                   | 空对象      |
-| useFetch | 是否使用 fetch,如果浏览器不支持，则降级为 xhr | true        |
-| url      | 请求 url，支持短路径                          | 空字符串    |
-| method   | 请求方法                                      | GET         |
-| dataType | 请求数据格式                                  | querystring |
-| resType  | 返回数据格式                                  | json        |
-| param    | 请求参数                                      | null        |
-| header   | 请求头设置                                    | null        |
-| jsonpKey | jsonp 请求是需要的 key                        | callback    |
-| cache           | get 请求是否有缓存                    | true                         |
-| withCredentials | 跨域带上 cookie                       | false                        |
+| 名称            | 说明                                          | 默认值      |
+| --------------- | --------------------------------------------- | ----------- |
+| baseURL         | 基础 url 路径                                 | 空字符串    |
+| paths           | 短路径(替换 url 中的短路径)                   | 空对象      |
+| useFetch        | 是否使用 fetch,如果浏览器不支持，则降级为 xhr | true        |
+| url             | 请求 url，支持短路径                          | 空字符串    |
+| method          | 请求方法                                      | GET         |
+| dataType        | 请求数据格式                                  | querystring |
+| resType         | 返回数据格式                                  | json        |
+| param           | 请求参数                                      | null        |
+| header          | 请求头设置                                    | null        |
+| jsonpKey        | jsonp 请求是需要的 key                        | callback    |
+| cache           | get 请求是否有缓存                            | true        |
+| withCredentials | 跨域带上 cookie                               | false       |
 
 ## 事件参数 req 说明
 
@@ -165,6 +165,19 @@ ajaxOne.get(
 | isXDR           | IE8，跨域是使用的对象                 | 表示 xhr 就是 xdr            |
 | withCredentials | 跨域带上 cookie                       | false                        |
 
-##　事件参数 res 说明
+## 事件参数 res 说明
 
-> 待 续...
+| 名称           | 说明                          | 默认值                    |
+| -------------- | ----------------------------- | ------------------------- |
+| withReq        | req 的引用                    | req                       |
+| root           | this 引用                     | Ajax                      |
+| err            | 错误内容                      | 默认为 null，便是正确返回 |
+| json           | json object                   | 空对象                    |
+| text           | 获取到的字符串                | 空字符串                  |
+| result         | 返回内容                      |                           |
+| getHeader(key) | 获取 key 对应的 header        | null                      |
+| cancel         | 验证节点设置为 true，中止回调 | false                     |
+| status         | 状态吗                        | 0                         |
+| getDate()      | 获取服务器时间                |                           |
+| getJSON(key)   | 获取 res.json 中的子字符串    |                           |
+| jsonKey        | jsonKey 中的对象              | json                      |
