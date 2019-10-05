@@ -67,7 +67,7 @@ ajaxOne
         res.root.emit("identity-err");
     })
     .on("open", req => {
-        // 这个事件仅作用与当前请求，并且上面那个拦截器先触发
+        // 这个事件仅作用与当前请求，并且上面那个拦截器后触发
     });
 ```
 
@@ -181,3 +181,15 @@ ajaxOne.get(
 | getDate()      | 获取服务器时间                |                           |
 | getJSON(key)   | 获取 res.json 中的子字符串    |                           |
 | jsonKey        | jsonKey 中的对象              | json                      |
+
+## AjaxGroup 静态方法
+
+> 待续
+
+## AjaxGroup 原型方法
+
+> 待续
+
+## Ajax 原型方法
+
+> 待续
