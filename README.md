@@ -184,11 +184,32 @@ ajaxOne.get(
 
 ## AjaxGroup 静态方法
 
-> 待续
+> setConf(options)
+
+-   设置全局参数，作用于全局的默认参数
 
 ## AjaxGroup 原型方法
 
-> 待续
+> setConf(options)
+
+-   当前分组实例的默认参数
+
+> create(options)
+
+-   当前分组下创建一个 ajax 请求
+-   options 只作用于当前 ajax 请求
+
+> fetch(options)
+
+-   当前分组下创建一个 ajax 请求，返回 Promise 对象
+
+> setDate(date:Date)
+
+-   设置服务器时间，一般内部使用
+
+> getDate():Date
+
+-   获取服务器时间
 
 ## Ajax 原型方法
 
