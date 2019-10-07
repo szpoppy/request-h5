@@ -194,10 +194,11 @@ ajaxOne.get(
 
 -   当前分组实例的默认参数
 
-> create(options)
+> create(options):Ajax
 
 -   当前分组下创建一个 ajax 请求
 -   options 只作用于当前 ajax 请求
+-   返回当前 Ajax 的实例
 
 > fetch(options)
 
@@ -213,4 +214,54 @@ ajaxOne.get(
 
 ## Ajax 原型方法
 
-> 待续
+> constructor(group[, options])
+
+-   构造方法
+-   group 为属于的分组
+-   options 为预设的参数
+
+> setConf(options)
+
+-   仅作用于当前 ajax 请求的参数
+
+> assign(key, value)
+
+-   扩展当前 ajax 参数
+-   key 可以为 Object
+
+> abort()
+
+-   中止当前 Ajax 请求
+
+> timeout(ms, callback)
+
+-   超时中止
+
+> send(param， isOver)
+
+-   发送请求
+-   param 请求参数
+-   isOver， 如果当此 ajax 正在请求是，是否中止 默认 false，为新发送的请求丢失
+
+> emit(type, ...args)
+
+-   触发事件
+-   type 事件名称
+-   args 事件参数
+
+> emit(type)
+
+-   判断是否有此事件
+
+> on(type, eventcall)
+
+-   添加事件
+-   type 事件名称
+-   eventcall 事件函数
+
+> off(type[, eventcall])
+
+-   移除事件
+-   type 事件名称
+-   eventcall 事件函数
+-   eventcall 不存在的时候，移除 type 对用的所有事件(不包含继承事件)
