@@ -88,10 +88,14 @@
             if (arr) {
                 let doExe = exe ? (exe.push ? forpush : forappend) : forback;
                 let len = arr.length;
+                let isStop = false
+                function stop() {
+                  isStop = true
+                }
                 if (types.indexOf("-" + toString.call(arr).toLowerCase() + "-") > -1 || "[object htmlcollection]" == String(arr).toLowerCase()) {
                     for (let i = 0; i < len; i += 1) {
-                        let item = fun.call(scope, arr[i], i);
-                        if (item === false) {
+                        let item = fun.call(scope, arr[i], i, stop);
+                        if (isStop) {
                             break;
                         }
                         doExe(exe, item, i);
@@ -99,8 +103,8 @@
                 } else {
                     for (let n in arr) {
                         if (!arr.hasOwnProperty || arr.hasOwnProperty(n)) {
-                            let item = fun.call(scope, arr[n], n);
-                            if (item === false) {
+                            let item = fun.call(scope, arr[n], n, stop);
+                            if (isStop) {
                                 break;
                             }
                             doExe(exe, item, n);
