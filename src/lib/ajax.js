@@ -88,9 +88,9 @@
             if (arr) {
                 let doExe = exe ? (exe.push ? forpush : forappend) : forback;
                 let len = arr.length;
-                let isStop = false
+                let isStop = false;
                 function stop() {
-                  isStop = true
+                    isStop = true;
                 }
                 if (types.indexOf("-" + toString.call(arr).toLowerCase() + "-") > -1 || "[object htmlcollection]" == String(arr).toLowerCase()) {
                     for (let i = 0; i < len; i += 1) {
@@ -238,6 +238,19 @@
     function getFullUrl(url) {
         linkA.setAttribute("href", url);
         return linkA.href;
+    }
+
+    // 安全获取子对象数据
+    function getSafeData(data, property) {
+        if (property && data) {
+            property.split(".").forEach(function(item) {
+                data = data[item];
+                if (data == null) {
+                    return false;
+                }
+            });
+        }
+        return data;
     }
 
     // =====================================================================参数整合url, 将多个URLSearchParams字符串合并为一个
@@ -590,19 +603,12 @@
         getDate() {
             return this.root.root.getDate();
         },
-        getJSON(property, data) {
+        getData(property, data) {
             if (data === undefined) {
                 data = this[this.jsonKey || "json"];
             }
-            if (property && data) {
-                property.split(".").forEach(function(item) {
-                    data = data[item];
-                    if (data == null) {
-                        return false;
-                    }
-                });
-            }
-            return data;
+
+            return getSafeData(data, property);
         },
         getHeader(key) {
             let val = "";
@@ -963,7 +969,8 @@
         qs,
         loadJS,
         getUUID,
-        getFullUrl
+        getFullUrl,
+        getSafeData
     };
 
     return val;
