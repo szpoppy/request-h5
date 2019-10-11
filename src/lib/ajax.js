@@ -849,7 +849,7 @@
             }
 
             // 制造 req
-            let req = Object.create(this.conf);
+            let req = assign({}, this.conf);
             req.root = this;
             this._req = req;
             // 异步，settime 部分参数可以后置设置生效
