@@ -800,7 +800,7 @@
 
         // 设置参数
         setConf(opt = {}) {
-            assign(this, getConf(opt));
+            assign(this.conf, getConf(opt));
             return this;
         }
 
@@ -849,11 +849,14 @@
             }
 
             // 制造 req
-            let req = assign({}, this.conf);
+            let req = {};
             req.root = this;
             this._req = req;
             // 异步，settime 部分参数可以后置设置生效
-            setTimeout(requestSend.bind(this, param || {}, req), 1);
+            setTimeout(() => {
+                assign(req, this.conf);
+                requestSend.call(this, param || {}, req);
+            }, 1);
             return this;
         }
 
