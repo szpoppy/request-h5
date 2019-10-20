@@ -633,9 +633,6 @@
         // 方法
         req.method = String(req.method || "get").toUpperCase();
 
-        // 之前发出
-        this.emit("before", req);
-
         // 请求类型
         let dataType = (req.dataType = String(req.dataType || "").toLowerCase());
 
@@ -643,6 +640,9 @@
         let res = Object.create(ajaxRes);
         res.withReq = req;
         res.root = this;
+
+        // 之前发出
+        this.emit("before", req);
 
         // 是否为 FormData
         let isFormData = false;

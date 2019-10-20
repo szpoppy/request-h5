@@ -14,13 +14,13 @@
 ## 特点
 
 -   事件模型驱动；
--   ajax分组支持；
+-   ajax 分组支持；
 -   基于事件模型的拦截器，支持分组拦截器；
 -   支持 promise；
 -   灵活的默认配置，全局->分组->ajax；
 -   短路径支持，方便统一切换接口路径；
 -   提供实时获取服务器时间方法；
--   jsonp和fetch支持。
+-   jsonp 和 fetch 支持。
 
 ## 安装
 
@@ -41,6 +41,10 @@
 | send     | 请求发送  | req   |
 | progress | 上传进度  | event |
 | open     | send 之前 | req   |
+| before   | open 之前 | req   |
+
+> req.dataType 只有在 before 中能修改
+> req.isFormData 在 before 中无此属性
 
 ## 添加一个分组
 
