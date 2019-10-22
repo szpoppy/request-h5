@@ -74,6 +74,13 @@ ajaxOne
     .on("open", req => {
         // 这个事件仅作用与当前请求，并且上面那个拦截器后触发
     });
+
+// 更多参数设置，直接通过 setConf 来设置
+ajaxOne
+    .get("url", res => {})
+    .setConf({
+        type: "json"
+    });
 ```
 
 ## promise 支持
