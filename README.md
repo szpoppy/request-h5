@@ -174,7 +174,6 @@ ajaxOne.get(
 | baseURL         | 基础 url 路径                         | 空字符串                     |
 | isCross         | 是否跨域                              | 按照 url 路径自动判断        |
 | xhr             | xhr 请求的对象                        |                              |
-| isXDR           | IE8，跨域是使用的对象                 | 表示 xhr 就是 xdr            |
 | withCredentials | 跨域带上 cookie                       | false                        |
 
 ## 事件参数 res 说明

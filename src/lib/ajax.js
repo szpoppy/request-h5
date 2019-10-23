@@ -461,11 +461,7 @@
     }
 
     //创建XHR，兼容各个浏览器
-    function createXHR(isCross) {
-        if (window.XDomainRequest && isCross) {
-            // IE8 创建跨域请求的xhr
-            return new window.XDomainRequest();
-        }
+    function createXHR() {
         return new window.XMLHttpRequest();
     }
     // xhr的onload事件
@@ -525,9 +521,6 @@
         // XHR
         req.xhr = createXHR(req.isCross);
 
-        // xhr 是否使用了 IE8 XDR
-        let isXDR = (req.isXDR = req.xhr.constructor == window.XDomainRequest);
-
         // xhr 请求方法
         let method = String(req.method || "GET").toUpperCase();
 
@@ -543,12 +536,6 @@
             req.xhr.open(method, fixedURL(req.url, paramStr), true);
             paramStr = null;
         } else {
-            // 其他可以放 body上
-            if (isXDR) {
-                // XDR 不能发送 body数据，参数只能放 url上
-                req.url = fixedURL(req.url, paramStr);
-                paramStr = null;
-            }
             req.xhr.open(method, req.url, true);
             if (req.header["Content-Type"] === undefined && !req.isFormData) {
                 // Content-Type 默认值
@@ -560,12 +547,10 @@
             req.header["X-Requested-With"] = "XMLHttpRequest";
         }
 
-        if (!isXDR) {
-            // XDR 不能设置 header
-            forEach(req.header, function(v, k) {
-                req.xhr.setRequestHeader(k, v);
-            });
-        }
+        // XDR 不能设置 header
+        forEach(req.header, function(v, k) {
+            req.xhr.setRequestHeader(k, v);
+        });
         res.status = 0;
 
         if (this.hasEvent("progress")) {
