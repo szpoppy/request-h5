@@ -32,16 +32,17 @@
 
 ## 事件说明
 
-| 事件名称 | 说明      | 参数  |
-| -------- | --------- | ----- |
-| timeout  | 请求超时  | req   |
-| callback | 请求完成  | res   |
-| abort    | 请求中止  | req   |
-| verify   | 验证数据  | res   |
-| send     | 请求发送  | req   |
-| progress | 上传进度  | event |
-| open     | send 之前 | req   |
-| before   | open 之前 | req   |
+| 事件名称 | 说明                                     | 参数  |
+| -------- | ---------------------------------------- | ----- |
+| timeout  | 请求超时                                 | req   |
+| callback | 请求完成                                 | res   |
+| abort    | 请求中止                                 | req   |
+| verify   | 验证数据                                 | res   |
+| send     | 请求发送                                 | req   |
+| progress | 上传进度                                 | event |
+| open     | send 之前，对传入的数据已经格式化完成    | req   |
+| before   | 最先触发的事件，req 中保存的数据相对原始 | req   |
+| path     | 对 url 格式化后触发                      |
 
 > req.dataType 只有在 before 中能修改
 > req.isFormData 在 before 中无此属性
@@ -161,20 +162,23 @@ ajaxOne.get(
 
 ## 事件参数 req 说明
 
-| 名称            | 说明                                  | 默认值                       |
-| --------------- | ------------------------------------- | ---------------------------- |
-| outFlag         | ajax 已经中止，内部使用               | false                        |
-| method          | 请求方法                              | GET                          |
-| url             | 请求 url                              | 空字符串                     |
-| cache           | get 请求是否有缓存                    | true                         |
-| resType         | 请求类型                              | 空字符串，默认为 querystring |
-| isFormData      | 是否为 FormData 数据，针对非 GET 请求 | 按照 param 类型数据自动判定  |
-| param           | 请求参数                              | 空对象                       |
-| header          | 请求头                                | 空对象                       |
-| baseURL         | 基础 url 路径                         | 空字符串                     |
-| isCross         | 是否跨域                              | 按照 url 路径自动判断        |
-| xhr             | xhr 请求的对象                        |                              |
-| withCredentials | 跨域带上 cookie                       | false                        |
+| 名称            | 说明                                  | 默认值                                          |
+| --------------- | ------------------------------------- | ----------------------------------------------- |
+| outFlag         | ajax 已经中止，内部使用               | false                                           |
+| method          | 请求方法                              | GET                                             |
+| url             | 请求 url                              | 空字符串                                        |
+| orginURL        | 保存的是原始传入的 url                | url                                             |
+| formatURL       | 格式化后（最终使用的）的 url          | 短路径 -> 全路径                                |
+| path            | 短路径目录截取值                      | 短路径 url 开头处 : 前面的字符，默认为 空字符串 |
+| cache           | get 请求是否有缓存                    | true                                            |
+| resType         | 请求类型                              | 空字符串，默认为 querystring                    |
+| isFormData      | 是否为 FormData 数据，针对非 GET 请求 | 按照 param 类型数据自动判定                     |
+| param           | 请求参数                              | 空对象                                          |
+| header          | 请求头                                | 空对象                                          |
+| baseURL         | 基础 url 路径                         | 空字符串                                        |
+| isCross         | 是否跨域                              | 按照 url 路径自动判断                           |
+| xhr             | xhr 请求的对象                        |                                                 |
+| withCredentials | 跨域带上 cookie                       | false                                           |
 
 ## 事件参数 res 说明
 

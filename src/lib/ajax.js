@@ -629,6 +629,22 @@
         // 之前发出
         this.emit("before", req);
 
+        req.path = "";
+        req.orginURL = req.url;
+        // 短路径替换
+        req.formatURL = req.orginURL.replace(/^(\w+):\/*/, (s0, s1) => {
+            req.path = s0;
+            return req.paths[s1] || s0;
+        });
+
+        if (req.baseURL && !/^(:?http(:?s)?:)?\/\//.test(req.url)) {
+            // 有baseURL 并且不是全量地址
+            req.formatURL = req.baseURL + req.formatURL;
+        }
+
+        // 确认短路径后
+        this.emit("path", req);
+
         // 是否为 FormData
         let isFormData = false;
         if (window.FormData && param instanceof window.FormData) {
@@ -652,7 +668,7 @@
             assign(req.param, param || {});
         }
 
-        // 出发open事件
+        // 数据整理完成
         this.emit("open", req);
 
         // 还原,防止复写， 防止在 open中重写这些参数
@@ -667,19 +683,10 @@
             }
         }
 
-        // 短路径替换
-        req.url = req.url.replace(/^(\w+):\/*/, (s0, s1) => {
-            return req.paths[s1] || s0;
-        });
-
-        if (req.baseURL && !/^(:?http(:?s)?:)?\/\//.test(req.url)) {
-            // 有baseURL 并且不是全量地址
-            req.url = req.baseURL + req.url;
-        }
-
         // 是否跨域, 获全路径后，比对
-        req.isCross = !/:\/\/$/.test(getFullUrl(req.url).split(host)[0] || "");
+        req.isCross = !/:\/\/$/.test(getFullUrl(req.formatURL).split(host)[0] || "");
 
+        req.url = req.formatURL;
         if (method == "JSONP") {
             // jsonp 获取数据
             jsonpSend.call(this, res);
@@ -691,7 +698,7 @@
             fetchSend.call(this, res);
             return;
         }
-
+        
         // 走 XMLHttpRequest
         xhrSend.call(this, res);
     }
