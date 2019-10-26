@@ -698,21 +698,12 @@
             fetchSend.call(this, res);
             return;
         }
-        
+
         // 走 XMLHttpRequest
         xhrSend.call(this, res);
     }
 
-    // 设置请求参数
-    const defConf = {
-        useFetch: true,
-        resType: "json",
-        jsonpKey: "callback",
-        cache: true
-    };
-    function getConf({ baseURL, paths, useFetch, url, method, dataType, resType, param = {}, header = {}, jsonpKey } = {}, cache, withCredentials) {
-        let val = {};
-
+    function getConf({ baseURL, paths, useFetch, url, method, dataType, resType, param = {}, header = {}, jsonpKey, cache, withCredentials } = {}, val = {}) {
         if (baseURL) {
             val.baseURL = baseURL;
         }
@@ -768,6 +759,22 @@
         return val;
     }
 
+    // 设置请求参数
+    let theGlobal = {
+        conf: {
+            useFetch: true,
+            resType: "json",
+            jsonpKey: "callback",
+            cache: true
+        },
+        events: {},
+        on: onEvent,
+        off: offEvent,
+        setConf(opt = {}) {
+            getConf(opt, theGlobal.conf);
+        }
+    };
+
     // 中止
     function ajaxAbort(flag) {
         let req = this._req;
@@ -790,12 +797,12 @@
         constructor(parent, opt) {
             this.root = parent;
             this.events = {};
-            this.conf = assign({}, parent.conf, getConf(opt));
+            this.conf = assign({}, theGlobal.conf, parent.conf, getConf(opt));
         }
 
         // 设置参数
         setConf(opt = {}) {
-            assign(this.conf, getConf(opt));
+            getConf(opt, this.conf);
             return this;
         }
 
@@ -857,7 +864,11 @@
 
         //
         emit(type, ...args) {
+            // 全局事件
+            emitEvent(theGlobal.events[type], this, args);
+            // 当前分组事件
             emitEvent(this.root.events[type], this, args);
+            // 当前ajax事件
             emitEvent(this.events[type], this, args);
             return this;
         }
@@ -882,19 +893,16 @@
         // paths 为短路径
         constructor(opt) {
             this.dateDiff = ajaxDateDiff;
-            this.conf = assign({}, defConf);
+            this.conf = {};
             this.events = {};
 
             opt && this.setConf(opt);
         }
 
-        static setConf(opt = {}) {
-            assign(defConf, getConf(opt));
-        }
-
         // 设置默认
         setConf(opt = {}) {
-            assign(this.conf, getConf(opt));
+            getConf(opt, this.conf);
+            return this;
         }
 
         // 创建一个ajax
@@ -959,8 +967,13 @@
     shortcut("put");
     shortcut("jsonp");
 
+    // 一个分组
     let val = new AjaxGroup();
+    // 全局
+    val.global = theGlobal;
+    // 分组类
     val.Request = AjaxGroup;
+    // 其他util函数
     val.util = {
         assign,
         forEach,

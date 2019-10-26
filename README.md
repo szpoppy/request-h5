@@ -11,6 +11,10 @@
 
 > 一套常用的 Ajax 解决方案
 
+## 更新说明
+
+-   2019-10-26 增加全局设置 global
+
 ## 特点
 
 -   事件模型驱动；
@@ -197,10 +201,6 @@ ajaxOne.get(
 | getJSON(key)   | 获取 res.json 中的子字符串    |                           |
 | jsonKey        | jsonKey 中的对象              | json                      |
 
-## AjaxGroup 静态方法
-
-> setConf(options)
-
 -   设置全局参数，作用于全局的默认参数
 
 ## AjaxGroup 原型方法
@@ -280,3 +280,9 @@ ajaxOne.get(
 -   type 事件名称
 -   eventcall 事件函数
 -   eventcall 不存在的时候，移除 type 对用的所有事件(不包含继承事件)
+
+## 全局设置
+
+`global.setConf(options)` 配置全局默认参数
+`global.on(type, callback)` 配置全局的事件
+`global.off(type)` 销毁全局的事件
