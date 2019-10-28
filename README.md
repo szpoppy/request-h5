@@ -27,6 +27,8 @@
 -   提供实时获取服务器时间方法；
 -   jsonp 和 fetch 支持。
 
+![](imgs/te.png)
+
 ## 安装
 
 > npm install request-h5 -- save
@@ -34,6 +36,15 @@
 ## 使用
 
 > import request from "request-h5"
+
+
+## 三层结构
+
+![](imgs/san.png)
+
+## 流程图
+
+![](imgs/liu.png)
 
 ## 事件说明
 
@@ -51,6 +62,10 @@
 
 > req.dataType 只有在 before 中能修改
 > req.isFormData 在 before 中无此属性
+
+## 事件触发流程
+
+![](imgs/shi.png)
 
 ## 添加一个分组
 
