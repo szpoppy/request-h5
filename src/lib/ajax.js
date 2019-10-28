@@ -862,6 +862,27 @@
             return this;
         }
 
+        // 返回Promist
+        then(thenFn) {
+            let pse = new Promise((resolve, reject) => {
+                this.on("callback", function(res) {
+                    if (res.err) {
+                        reject(res);
+                    } else {
+                        resolve(res);
+                    }
+                });
+                this.on("timeout", function() {
+                    reject({ err: "访问超时", errType: 1 });
+                });
+                this.on("abort", function() {
+                    reject({ err: "访问中止", errType: 2 });
+                });
+            });
+
+            return (thenFn && pse.then(thenFn)) || pse;
+        }
+
         //
         emit(type, ...args) {
             // 全局事件
@@ -912,23 +933,9 @@
 
         // promise
         fetch(opt) {
-            let one = new Ajax(this, opt);
-            return new Promise(function(resolve, reject) {
-                one.on("callback", function(res) {
-                    if (res.err) {
-                        reject(res);
-                    } else {
-                        resolve(res);
-                    }
-                });
-                one.on("timeout", function() {
-                    reject({ err: "访问超时" });
-                });
-                one.on("abort", function() {
-                    reject({ err: "访问中止" });
-                });
-                one.send();
-            });
+            let one = this.create(opt)
+            one.send()
+            return one.then()
         }
 
         setDate(date) {
@@ -952,6 +959,10 @@
     // 用于生成快捷方法
     function shortcut(type) {
         return (AjaxGroup.prototype[type] = function(url, callback, param) {
+            if(callback && typeof callback != "function") {
+                param = callback
+                callback = null
+            }
             let one = new Ajax(this, {
                 url: url,
                 method: type

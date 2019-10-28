@@ -9,11 +9,12 @@
 
 # request-h5
 
-> 一套支持分组拦截器的ajax常用框架
+> 一套支持分组拦截器的 ajax 常用框架
 
 ## 更新说明
 
--   2019-10-26 增加全局设置 global
+-   +2019-10-26 增加全局设置 global
+-   +2019-10-28 Ajax 增加原型方法 then
 
 ## 特点
 
@@ -252,11 +253,15 @@ ajaxOne.get(
 
 -   超时中止
 
-> send(param， isOver)
+> send(param, isOver)
 
 -   发送请求
 -   param 请求参数
 -   isOver， 如果当此 ajax 正在请求是，是否中止 默认 false，为新发送的请求丢失
+
+> then([resolve:function])
+
+-   返回 Promise 对象
 
 > emit(type, ...args)
 
@@ -280,6 +285,14 @@ ajaxOne.get(
 -   type 事件名称
 -   eventcall 事件函数
 -   eventcall 不存在的时候，移除 type 对用的所有事件(不包含继承事件)
+
+> 别名 get|post|put|jsonp(url, [callback:function, param:any])
+
+-   ajax 请求别名
+-   url 请求地址，支持短路径
+-   callback 回调函数
+-   param 参数
+-   返回 ajax 实例
 
 ## 全局设置
 
