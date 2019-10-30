@@ -63,7 +63,7 @@
 > req.dataType 只有在 before 中能修改
 > req.isFormData 在 before 中无此属性
 
-## 事件触发流程
+## 事件流程
 
 ![](imgs/shi.png)
 
