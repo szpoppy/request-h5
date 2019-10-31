@@ -380,6 +380,7 @@
             headers: req.header
         };
 
+        // 提交字符串
         let paramStr = getParamString(param, req.dataType);
 
         if (method == "GET") {
