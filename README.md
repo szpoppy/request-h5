@@ -40,7 +40,7 @@
 
 ## 三层结构
 
-![](imgs/san.png)
+![](imgs/san2.png)
 
 ## 流程图
 
