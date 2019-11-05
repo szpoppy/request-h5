@@ -316,6 +316,7 @@
 
     // ==============================================jsonp==============================================
     function jsonpSend(res) {
+        // req
         let req = res.withReq;
 
         // 参数
@@ -380,6 +381,7 @@
             headers: req.header
         };
 
+        // 提交字符串
         let paramStr = getParamString(param, req.dataType);
 
         if (method == "GET") {

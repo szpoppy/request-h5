@@ -9,7 +9,7 @@
 
 # request-h5
 
-> 一套支持分组拦截器的 ajax 常用框架
+> 一套支持分组拦截器的 ajax框架
 
 ## 更新说明
 
@@ -63,15 +63,15 @@
 > req.dataType 只有在 before 中能修改
 > req.isFormData 在 before 中无此属性
 
-## 事件触发流程
+## 事件流程
 
 ![](imgs/shi.png)
 
-## 添加一个分组
+## 新建一个分组
 
 > let ajaxOne = new ajax.Group()
 
-## 添加事件
+## 添加事件拦截器
 
 > 事件作用在一个分组上或者作用在单个请求上
 
