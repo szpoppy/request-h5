@@ -292,7 +292,7 @@
                 res.json = {};
             }
         }
-        if (res.json) {
+        if (req.resType == "json") {
             res.result = res.json;
         }
 
@@ -935,9 +935,9 @@
 
         // promise
         fetch(opt) {
-            let one = this.create(opt)
-            one.send()
-            return one.then()
+            let one = this.create(opt);
+            one.send();
+            return one.then();
         }
 
         setDate(date) {
@@ -961,9 +961,9 @@
     // 用于生成快捷方法
     function shortcut(type) {
         return (AjaxGroup.prototype[type] = function(url, callback, param) {
-            if(callback && typeof callback != "function") {
-                param = callback
-                callback = null
+            if (callback && typeof callback != "function") {
+                param = callback;
+                callback = null;
             }
             let one = new Ajax(this, {
                 url: url,
