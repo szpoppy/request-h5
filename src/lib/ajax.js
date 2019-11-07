@@ -19,7 +19,7 @@
     // 是否原声支持 fetch
     let hasFetch = !!window.fetch;
 
-    // ============================================事件函数
+    // ============================================ 事件函数
     function onEvent(type, fn) {
         let evs = this.events[type];
         if (!evs) {
@@ -58,7 +58,7 @@
         return args;
     }
 
-    // ====================================事件循环
+    // ==================================== 事件循环
     /**
      * 数据循环
      * @param {Array、Object} arr 循环的数据
@@ -175,7 +175,7 @@
         }
     };
 
-    // ==============================================================深度克隆
+    // ============================================================== 深度克隆
     function assign(target, ...objs) {
         forEach(objs, function(source) {
             forEach(source, function(item, n) {
@@ -195,7 +195,7 @@
         return target;
     }
 
-    // =========================================================================动态加载js
+    // ========================================================================= 动态加载js
     // jsonp 加载方式需要使用
     let head = document.head || document.getElementsByTagName("head")[0] || document.documentElement;
     function loadJS(url, callback) {
@@ -222,7 +222,7 @@
         return node;
     }
 
-    // ======================================================================获取页面唯一的 id 值
+    // ====================================================================== 获取页面唯一的 id 值
     // jsonp和禁止使用缓存中使用
     let soleTime = new Date().getTime() - 1000000;
     let soleCount = 1000;
@@ -232,7 +232,7 @@
         return Number(Math.round((Math.random() + 1) * 1000000) + (new Date().getTime() - soleTime) + "" + soleCount).toString(36);
     }
 
-    // =====================================================================获得url的真实地址
+    // ===================================================================== 获得url的真实地址
     // 判断请求是否为跨域使用
     let linkA = document.createElement("a");
     function getFullUrl(url) {
@@ -253,7 +253,7 @@
         return data;
     }
 
-    // =====================================================================参数整合url, 将多个URLSearchParams字符串合并为一个
+    // ===================================================================== 参数整合url, 将多个URLSearchParams字符串合并为一个
     function fixedURL(url, paramStr) {
         if (paramStr) {
             return url + (url.indexOf("?") > -1 ? "&" : "?") + paramStr;
@@ -261,7 +261,7 @@
         return url;
     }
 
-    // =====================================================================参数转为 字符串
+    // ===================================================================== 参数转为 字符串
     function getParamString(param, dataType) {
         if (param instanceof window.FormData) {
             return param;
@@ -273,7 +273,7 @@
         return str;
     }
 
-    // =====================================================================获取默认的 Content-Type 的值
+    // ===================================================================== 获取默认的 Content-Type 的值
     function getDefaultContentType(dataType) {
         if (dataType == "json") {
             return "application/json";
