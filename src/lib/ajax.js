@@ -110,7 +110,7 @@
                     }
                 }
             }
-            return exe || scope
+            return exe
         }
     })()
 
@@ -177,17 +177,29 @@
     function assign(target, ...objs) {
         forEach(objs, function(source) {
             forEach(source, function(item, n) {
-                if (item && typeof item == "object") {
-                    //console.log(JSON.stringify(item), JSON.stringify(target[n]), n, toString.call(target[n]), toString.call(item))
-                    if (target[n] == null || toString.call(target[n]) != toString.call(item)) {
-                        // 发现 原来 target 存在相同的数据，不在此覆盖数据
-                        // 于 Object.assign 不同在于此
-                        target[n] = item instanceof Array ? [] : {}
+                if (item) {
+                    let type = toString.call(item).toLowerCase()
+                    if (type == "[object date]") {
+                        target[n] = new Date(item.getTime())
+                        return
                     }
-                    assign(target[n], item)
-                } else {
-                    target[n] = item
+                    let targetType = toString.call(target[n]).toLowerCase()
+                    if (type == "[object array]") {
+                        if (targetType != type) {
+                            target[n] = []
+                        }
+                        assign(target[n], item)
+                        return
+                    }
+                    if (type == "[object object]") {
+                        if (targetType != type) {
+                            target[n] = {}
+                        }
+                        assign(target[n], item)
+                        return
+                    }
                 }
+                target[n] = item
             })
         })
         return target
@@ -279,8 +291,9 @@
         return "application/x-www-form-urlencoded"
     }
 
-    // 结束 同意处理返回的数据
+    // 结束 统一处理返回的数据
     function responseEnd(res) {
+        let req = res.withReq
         if (!res.json && res.text) {
             // 尝试格式为 json字符串
 
