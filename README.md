@@ -16,6 +16,7 @@
 -   +2019-10-26 增加全局设置 global
 -   +2019-10-28 Ajax 增加原型方法 then
 -   +2019-11-15 url开头出支持特殊参数传入 比如：<post> 表示此次请求为 post 
+-   +2019-11-19 ajax.Group.prototype.load 方法
 
 ## 特点
 
@@ -243,6 +244,14 @@ ajaxOne.get(
 > getDate():Date
 
 -   获取服务器时间
+
+> load(url[, callback, param]):Ajax
+> get(url[, callback, param]):Ajax
+> post(url[, callback, param]):Ajax
+> put(url[, callback, param]):Ajax
+> jsonp(url[, callback, param]):Ajax
+
+-   快捷方式加载
 
 ## Ajax 原型方法
 

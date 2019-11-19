@@ -957,11 +957,29 @@
             return new Ajax(this, opt)
         }
 
+        // 创建并加载
+        load(url, callback, param) {
+            let opt = url
+            if(typeof url == "string") {
+                opt = {
+                    url: url
+                }
+            }
+
+            if (callback && typeof callback != "function") {
+                param = callback
+                callback = null
+            }
+            
+            let one = new Ajax(this, opt)
+            callback && one.on("callback", callback)
+            one.send(param)
+            return one
+        }
+
         // promise
         fetch(opt) {
-            let one = this.create(opt)
-            one.send()
-            return one.then()
+            return this.create(opt).send().then()
         }
 
         setDate(date) {
@@ -984,18 +1002,8 @@
 
     // 用于生成快捷方法
     function shortcut(type) {
-        return (AjaxGroup.prototype[type] = function(url, callback, param) {
-            if (callback && typeof callback != "function") {
-                param = callback
-                callback = null
-            }
-            let one = new Ajax(this, {
-                url: url,
-                method: type
-            })
-            callback && one.on("callback", callback)
-            one.send(param)
-            return one
+        return (AjaxGroup.prototype[type] = function() {
+            return this.load.apply(this, arguments).setConf({method: type})
         })
     }
 
