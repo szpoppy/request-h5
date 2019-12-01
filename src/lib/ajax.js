@@ -661,7 +661,7 @@
                 return req.paths[s1] || s0
             })
 
-        if (req.baseURL && !/^(:?http(:?s)?:)?\/\//.test(req.url)) {
+        if (req.baseURL && !/^(:?http(:?s)?:)?\/\//i.test(req.url)) {
             // 有baseURL 并且不是全量地址
             req.formatURL = req.baseURL + req.formatURL
         }
