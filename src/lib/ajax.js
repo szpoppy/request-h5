@@ -1,16 +1,16 @@
 ;(function(global, factory) {
     // UMD 加载方案
-    if (typeof exports === "object" && typeof module !== "undefined") {
+    if (typeof exports === 'object' && typeof module !== 'undefined') {
         module.exports = factory()
         return
     }
-    if (typeof global.define === "function" && global.define.amd) {
+    if (typeof global.define === 'function' && global.define.amd) {
         global.define(factory)
         return
     }
     global.requestFn = factory()
 })(window, function() {
-    "use strict"
+    'use strict'
 
     // toString
     let toString = Object.prototype.toString
@@ -80,7 +80,7 @@
         }
 
         // 支持for循环的 数据
-        const types = "-[object array]-[object nodelist]-[object htmlcollection]-[object arguments]-"
+        const types = '-[object array]-[object nodelist]-[object htmlcollection]-[object arguments]-'
 
         return function(arr, fun, exe) {
             if (arr) {
@@ -90,7 +90,7 @@
                 function stop() {
                     isStop = true
                 }
-                if (types.indexOf("-" + toString.call(arr).toLowerCase() + "-") > -1 || "[object htmlcollection]" == String(arr).toLowerCase()) {
+                if (types.indexOf('-' + toString.call(arr).toLowerCase() + '-') > -1 || '[object htmlcollection]' == String(arr).toLowerCase()) {
                     for (let i = 0; i < len; i += 1) {
                         let item = fun(arr[i], i, stop)
                         if (isStop) {
@@ -118,13 +118,13 @@
     // URL 查询字符串
     let qs = {
         parse: function(str, opt) {
-            let sep = (opt && opt.sep) || "&"
-            let eq = (opt && opt.eq) || "="
+            let sep = (opt && opt.sep) || '&'
+            let eq = (opt && opt.eq) || '='
             let unescape = (opt && opt.unescape) || window.decodeURIComponent
 
             let data = {}
             // 去除部分没有的字符
-            str.replace(/^[\s#?]+/, "")
+            str.replace(/^[\s#?]+/, '')
                 .split(sep)
                 .forEach(function(item) {
                     if (!item) {
@@ -133,7 +133,7 @@
                     let arr = item.split(eq)
                     let key = arr[0]
                     if (key) {
-                        let val = unescape(arr[1] || "")
+                        let val = unescape(arr[1] || '')
                         if (data[key] === undefined) {
                             // 赋值
                             data[key] = val
@@ -149,14 +149,14 @@
             return data
         },
         stringify: function(json, opt) {
-            let sep = (opt && opt.sep) || "&"
-            let eq = (opt && opt.eq) || "="
+            let sep = (opt && opt.sep) || '&'
+            let eq = (opt && opt.eq) || '='
             let escape = (opt && opt.escape) || window.encodeURIComponent
 
             let arr = []
             forEach(json, function(item, n) {
                 if (item == null) {
-                    item = ""
+                    item = ''
                 }
                 let key = escape(n)
                 if (item && item.constructor == Array) {
@@ -179,19 +179,19 @@
             forEach(source, function(item, n) {
                 if (item) {
                     let type = toString.call(item).toLowerCase()
-                    if (type == "[object date]") {
+                    if (type == '[object date]') {
                         target[n] = new Date(item.getTime())
                         return
                     }
                     let targetType = toString.call(target[n]).toLowerCase()
-                    if (type == "[object array]") {
+                    if (type == '[object array]') {
                         if (targetType != type) {
                             target[n] = []
                         }
                         assign(target[n], item)
                         return
                     }
-                    if (type == "[object object]") {
+                    if (type == '[object object]') {
                         if (targetType != type) {
                             target[n] = {}
                         }
@@ -207,12 +207,12 @@
 
     // ========================================================================= 动态加载js
     // jsonp 加载方式需要使用
-    let head = document.head || document.getElementsByTagName("head")[0] || document.documentElement
+    let head = document.head || document.getElementsByTagName('head')[0] || document.documentElement
     function loadJS(url, callback) {
         // 创建节点
-        let node = document.createElement("script")
+        let node = document.createElement('script')
         // 设置属性
-        node.setAttribute("type", "text/javascript")
+        node.setAttribute('type', 'text/javascript')
         node.onload = node.onerror = function() {
             node.onload = node.onerror = null
             callback && callback()
@@ -239,21 +239,21 @@
     function getUUID() {
         soleCount
         soleCount += 1
-        return Number(Math.round((Math.random() + 1) * 1000000) + (new Date().getTime() - soleTime) + "" + soleCount).toString(36)
+        return Number(Math.round((Math.random() + 1) * 1000000) + (new Date().getTime() - soleTime) + '' + soleCount).toString(36)
     }
 
     // ===================================================================== 获得url的真实地址
     // 判断请求是否为跨域使用
-    let linkA = document.createElement("a")
+    let linkA = document.createElement('a')
     function getFullUrl(url) {
-        linkA.setAttribute("href", url)
+        linkA.setAttribute('href', url)
         return linkA.href
     }
 
     // 安全获取子对象数据
     function getSafeData(data, property) {
         if (property && data) {
-            property.split(".").forEach(function(item) {
+            property.split('.').forEach(function(item) {
                 data = data[item]
                 if (data == null) {
                     return false
@@ -266,7 +266,7 @@
     // ===================================================================== 参数整合url, 将多个URLSearchParams字符串合并为一个
     function fixedURL(url, paramStr) {
         if (paramStr) {
-            return url + (url.indexOf("?") > -1 ? "&" : "?") + paramStr
+            return url + (url.indexOf('?') > -1 ? '&' : '?') + paramStr
         }
         return url
     }
@@ -276,19 +276,19 @@
         if (param instanceof window.FormData) {
             return param
         }
-        if (!param || typeof param == "string") {
-            return param || ""
+        if (!param || typeof param == 'string') {
+            return param || ''
         }
-        let str = dataType == "json" ? JSON.stringify(param) : qs.stringify(param)
+        let str = dataType == 'json' ? JSON.stringify(param) : qs.stringify(param)
         return str
     }
 
     // ===================================================================== 获取默认的 Content-Type 的值
     function getDefaultContentType(dataType) {
-        if (dataType == "json") {
-            return "application/json"
+        if (dataType == 'json') {
+            return 'application/json'
         }
-        return "application/x-www-form-urlencoded"
+        return 'application/x-www-form-urlencoded'
     }
 
     // 结束 统一处理返回的数据
@@ -303,11 +303,11 @@
                 res.json = {}
             }
         }
-        if (req.resType == "json") {
+        if (req.resType == 'json') {
             res.result = res.json
         }
 
-        let date = res.getHeader("Date")
+        let date = res.getHeader('Date')
         if (date) {
             this.root.setDate(date)
         }
@@ -315,14 +315,14 @@
         delete this._req
 
         // 出发验证事件
-        this.emit("verify", res)
+        this.emit('verify', res)
 
         if (res.cancel === true) {
             // 验证事件中设置 res.cancel 为false，中断处理
             return
         }
         // callback事件，可以看做函数回调
-        this.emit("callback", res)
+        this.emit('callback', res)
     }
 
     // ==============================================jsonp==============================================
@@ -339,7 +339,7 @@
         let backFunKey = param[key]
         if (!backFunKey) {
             // 没设置，自动设置一个
-            param[key] = backFunKey = "jsonp_" + getUUID()
+            param[key] = backFunKey = 'jsonp_' + getUUID()
         }
 
         // 控制，只出发一次回调
@@ -351,9 +351,9 @@
                 // json数据
                 res.json = data
                 // json字符串
-                res.text = ""
+                res.text = ''
                 // 错误，有data就正确的
-                res.err = data ? null : "http error"
+                res.err = data ? null : 'http error'
                 if (!req.outFlag) {
                     // outFlag 就中止
                     responseEnd.call(this, res)
@@ -368,7 +368,7 @@
         let url = fixedURL(req.url, getParamString(param, req.dataType))
 
         // 发送事件出发
-        this.emit("send", req)
+        this.emit('send', req)
         // 发送请求
         loadJS(url, function() {
             backFun()
@@ -381,7 +381,7 @@
     function fetchSend(res) {
         let req = res.withReq
         // 方法
-        let method = String(req.method || "GET").toUpperCase()
+        let method = String(req.method || 'GET').toUpperCase()
 
         // 参数
         let param = req.param
@@ -395,32 +395,32 @@
         // 提交字符串
         let paramStr = getParamString(param, req.dataType)
 
-        if (method == "GET") {
+        if (method == 'GET') {
             req.url = fixedURL(req.url, paramStr)
             option.body = param = null
         } else {
             option.body = paramStr || null
-            if (req.header["Content-Type"] === undefined && !req.isFormData) {
+            if (req.header['Content-Type'] === undefined && !req.isFormData) {
                 // 默认 Content-Type
-                req.header["Content-Type"] = getDefaultContentType(req.dataType)
+                req.header['Content-Type'] = getDefaultContentType(req.dataType)
             }
         }
 
-        if (req.header["X-Requested-With"] === undefined && !req.isCross) {
+        if (req.header['X-Requested-With'] === undefined && !req.isCross) {
             // 跨域不增加 X-Requested-With
-            req.header["X-Requested-With"] = "XMLHttpRequest"
+            req.header['X-Requested-With'] = 'XMLHttpRequest'
         }
 
         if (req.isCross) {
             // 跨域
-            option.mode = "cors"
+            option.mode = 'cors'
             if (req.withCredentials) {
                 // 发送请求，带上cookie
-                option.credentials = "include"
+                option.credentials = 'include'
             }
         } else {
             // 同域，默认带上cookie
-            option.credentials = "same-origin"
+            option.credentials = 'same-origin'
         }
 
         // response.text then回调函数
@@ -441,22 +441,22 @@
                     try {
                         return response.headers.get(key)
                     } catch (e) {
-                        return ""
+                        return ''
                     }
                 }
 
                 // 状态吗
                 res.status = response.status
                 // 返回的字符串
-                res.text = ""
+                res.text = ''
                 // 是否有错误
-                res.err = response.ok ? null : "http error [" + res.status + "]"
-                let results = ["", null]
+                res.err = response.ok ? null : 'http error [' + res.status + ']'
+                let results = ['', null]
                 try {
                     results[0] = response.text()
                 } catch (e) {}
 
-                if (["json", "text"].indexOf(req.resType) < 0) {
+                if (['json', 'text'].indexOf(req.resType) < 0) {
                     try {
                         results[1] = response[req.resType]()
                     } catch (e) {}
@@ -468,7 +468,7 @@
         }
 
         // 发送事件处理
-        this.emit("send", req)
+        this.emit('send', req)
         // 发送数据
         window.fetch(req.url, option).then(fetchBack, fetchBack)
     }
@@ -483,7 +483,7 @@
         let xhr = req.xhr
         // req.outFlag 为true 表示，本次ajax已经中止，无需处理
         if (xhr && !req.outFlag) {
-            let headers = ""
+            let headers = ''
             try {
                 // 获取所有可以的的header值（字符串）
                 headers = xhr.getAllResponseHeaders()
@@ -492,11 +492,11 @@
             // 获取某个headers中的值
             res.headers = {
                 get(key) {
-                    return new RegExp("(?:" + key + "):[ \t]*([^\r\n]*)\r").test(headers) ? RegExp["$1"] : ""
+                    return new RegExp('(?:' + key + '):[ \t]*([^\r\n]*)\r').test(headers) ? RegExp['$1'] : ''
                 }
             }
 
-            res.text = ""
+            res.text = ''
             try {
                 // 返回的文本信息
                 res.text = xhr.responseText
@@ -518,7 +518,7 @@
             // }
             let s = res.status
             // 默认只有当 正确的status才是 null， 否则是错误
-            res.err = (s >= 200 && s < 300) || s === 304 || s === 1223 ? null : "http error [" + s + "]"
+            res.err = (s >= 200 && s < 300) || s === 304 || s === 1223 ? null : 'http error [' + s + ']'
             // 统一后处理
             responseEnd.call(this, res)
         }
@@ -535,7 +535,7 @@
         req.xhr = createXHR(req.isCross)
 
         // xhr 请求方法
-        let method = String(req.method || "GET").toUpperCase()
+        let method = String(req.method || 'GET').toUpperCase()
 
         if (req.withCredentials) {
             // xhr 跨域带cookie
@@ -544,20 +544,20 @@
 
         let paramStr = getParamString(req.param, req.dataType)
 
-        if (method == "GET") {
+        if (method == 'GET') {
             // get 方法，参数都组合到 url上面
             req.xhr.open(method, fixedURL(req.url, paramStr), true)
             paramStr = null
         } else {
             req.xhr.open(method, req.url, true)
-            if (req.header["Content-Type"] === undefined && !req.isFormData) {
+            if (req.header['Content-Type'] === undefined && !req.isFormData) {
                 // Content-Type 默认值
-                req.header["Content-Type"] = getDefaultContentType(req.dataType)
+                req.header['Content-Type'] = getDefaultContentType(req.dataType)
             }
         }
-        if (req.header["X-Requested-With"] === undefined && !req.isCross) {
+        if (req.header['X-Requested-With'] === undefined && !req.isCross) {
             // 跨域不增加 X-Requested-With 如果增加，容易出现问题，需要可以通过 事件设置
-            req.header["X-Requested-With"] = "XMLHttpRequest"
+            req.header['X-Requested-With'] = 'XMLHttpRequest'
         }
 
         // XDR 不能设置 header
@@ -566,12 +566,12 @@
         })
         res.status = 0
 
-        if (this.hasEvent("progress")) {
+        if (this.hasEvent('progress')) {
             // 跨域 加上 progress post请求导致 多发送一个 options 的请求
             // 只有有进度需求的任务,才加上
             try {
                 req.xhr.upload.onprogress = () => {
-                    this.emit("progress", event)
+                    this.emit('progress', event)
                 }
             } catch (e) {}
         }
@@ -582,16 +582,16 @@
         req.xhr.onload = onload.bind(this, res)
 
         // 发送前出发send事件
-        this.emit("send", req)
+        this.emit('send', req)
 
-        if (["arrayBuffer", "blob"].indexOf(req.resType) >= 0) {
+        if (['arrayBuffer', 'blob'].indexOf(req.resType) >= 0) {
             req.xhr.responseType = req.resType
         }
 
         // 发送请求，注意要替换
         if (paramStr) {
             // eslint-disable-next-line
-            paramStr = paramStr.replace(/[\x00-\x08\x11-\x12\x14-\x20]/g, "*")
+            paramStr = paramStr.replace(/[\x00-\x08\x11-\x12\x14-\x20]/g, '*')
         }
         req.xhr.send(paramStr)
     }
@@ -603,13 +603,13 @@
         },
         getData(property, data) {
             if (data === undefined) {
-                data = this[this.jsonKey || "json"]
+                data = this[this.jsonKey || 'json']
             }
 
             return getSafeData(data, property)
         },
         getHeader(key) {
-            let val = ""
+            let val = ''
             if (this.headers) {
                 try {
                     val = this.headers.get(key)
@@ -629,7 +629,7 @@
         }
 
         // 方法
-        req.method = String(req.method || "get").toUpperCase()
+        req.method = String(req.method || 'get').toUpperCase()
 
         // callback中接收的 res
         let res = Object.create(ajaxRes)
@@ -637,9 +637,9 @@
         res.root = this
 
         // 之前发出
-        this.emit("before", req)
+        this.emit('before', req)
 
-        req.path = ""
+        req.path = ''
         req.orginURL = req.url
         // 短路径替换
         req.formatURL = req.orginURL
@@ -649,11 +649,11 @@
                     let [k1, k2] = key.toLowerCase().split(/:+/)
                     if (k2 === undefined) {
                         k2 = k1
-                        k1 = "method"
+                        k1 = 'method'
                     }
                     req[k1] = k2
                 })
-                return ""
+                return ''
             })
             // 短路经
             .replace(/^(\w+):(?!\/\/)/, (s0, s1) => {
@@ -667,7 +667,7 @@
         }
 
         // 确认短路径后
-        this.emit("path", req)
+        this.emit('path', req)
 
         // 是否为 FormData
         let isFormData = false
@@ -677,7 +677,7 @@
         req.isFormData = isFormData
 
         // 请求类型
-        let dataType = (req.dataType = String(req.dataType || "").toLowerCase())
+        let dataType = (req.dataType = String(req.dataType || '').toLowerCase())
 
         if (isFormData) {
             // FormData 将参数都添加到 FormData中
@@ -688,22 +688,22 @@
             })
             req.param = param
         } else {
-            if (typeof param == "string") {
+            if (typeof param == 'string') {
                 // 参数为字符串，自动格式化为 object，后面合并后在序列化
-                param = dataType == "json" ? JSON.parse(param) : qs.parse(param)
+                param = dataType == 'json' ? JSON.parse(param) : qs.parse(param)
             }
             assign(req.param, param || {})
         }
 
         // 数据整理完成
-        this.emit("open", req)
+        this.emit('open', req)
 
         // 还原,防止复写， 防止在 open中重写这些参数
         req.isFormData = isFormData
         req.dataType = dataType
 
-        let method = String(req.method || "get").toUpperCase()
-        if (method == "GET") {
+        let method = String(req.method || 'get').toUpperCase()
+        if (method == 'GET') {
             if (req.cache === false && !req.param._r_) {
                 // 加随机数，去缓存
                 req.param._r_ = getUUID()
@@ -711,16 +711,16 @@
         }
 
         // 是否跨域, 获全路径后，比对
-        req.isCross = !/:\/\/$/.test(getFullUrl(req.formatURL).split(host)[0] || "")
+        req.isCross = !/:\/\/$/.test(getFullUrl(req.formatURL).split(host)[0] || '')
 
         req.url = req.formatURL
-        if (method == "JSONP") {
+        if (method == 'JSONP') {
             // jsonp 获取数据
             jsonpSend.call(this, res)
             return
         }
 
-        if (hasFetch && req.useFetch && !this.hasEvent("progress")) {
+        if (hasFetch && req.useFetch && !this.hasEvent('progress')) {
             //fetch 存在 fetch 并且无上传或者进度回调 只能异步
             fetchSend.call(this, res)
             return
@@ -739,7 +739,7 @@
             val.paths = paths
         }
 
-        if (typeof useFetch == "boolean") {
+        if (typeof useFetch == 'boolean') {
             val.useFetch = useFetch
         }
 
@@ -776,11 +776,11 @@
             val.jsonpKey = jsonpKey
         }
 
-        if (typeof cache == "boolean") {
+        if (typeof cache == 'boolean') {
             val.cache = cache
         }
 
-        if (typeof withCredentials == "boolean") {
+        if (typeof withCredentials == 'boolean') {
             val.withCredentials = withCredentials
         }
         return val
@@ -790,8 +790,8 @@
     let theGlobal = {
         conf: {
             useFetch: true,
-            resType: "json",
-            jsonpKey: "callback",
+            resType: 'json',
+            jsonpKey: 'callback',
             cache: true
         },
         events: {},
@@ -814,7 +814,7 @@
                 req.xhr = null
             }
             delete this._req
-            flag && this.emit("abort", req)
+            flag && this.emit('abort', req)
         }
     }
 
@@ -835,7 +835,7 @@
 
         // 扩展
         assign(...args) {
-            if (typeof args[0] === "string") {
+            if (typeof args[0] === 'string') {
                 this.assign({ [args[0]]: args[1] })
             } else {
                 args.unshift(this)
@@ -858,10 +858,10 @@
                     // 超时 设置中止
                     ajaxAbort.call(this)
                     // 出发超时事件
-                    this.emit("timeout", req)
+                    this.emit('timeout', req)
                 }
             }, time)
-            callback && this.on("timeout", callback)
+            callback && this.on('timeout', callback)
             return this
         }
 
@@ -892,18 +892,18 @@
         // 返回Promist
         then(thenFn) {
             let pse = new Promise((resolve, reject) => {
-                this.on("callback", function(res) {
+                this.on('callback', function(res) {
                     if (res.err) {
                         reject(res)
                     } else {
                         resolve(res)
                     }
                 })
-                this.on("timeout", function() {
-                    reject({ err: "访问超时", errType: 1 })
+                this.on('timeout', function() {
+                    reject({ err: '访问超时', errType: 1 })
                 })
-                this.on("abort", function() {
-                    reject({ err: "访问中止", errType: 2 })
+                this.on('abort', function() {
+                    reject({ err: '访问中止', errType: 2 })
                 })
             })
 
@@ -937,14 +937,27 @@
     let ajaxDateDiff = 0
     // ======================================================
     // ajax群组
+    function newGroup(opt) {
+        opt.dateDiff = ajaxDateDiff
+        opt.conf = {}
+        opt.events = {}
+    }
     class AjaxGroup {
         // paths 为短路径
         constructor(opt) {
-            this.dateDiff = ajaxDateDiff
-            this.conf = {}
-            this.events = {}
-
+            newGroup(this)
             opt && this.setConf(opt)
+        }
+
+        static create(fn) {
+            if (!fn) {
+                fn = function(...arg) {
+                    return fn.load(...arg)
+                }
+            }
+            Object.setPrototypeOf(fn, AjaxGroup.prototype)
+            newGroup(fn)
+            return fn
         }
 
         // 设置默认
@@ -961,31 +974,33 @@
         // 创建并加载
         load(url, callback, param) {
             let opt = url
-            if(typeof url == "string") {
+            if (typeof url == 'string') {
                 opt = {
                     url: url
                 }
             }
 
-            if (callback && typeof callback != "function") {
+            if (callback && typeof callback != 'function') {
                 param = callback
                 callback = null
             }
-            
+
             let one = new Ajax(this, opt)
-            callback && one.on("callback", callback)
+            callback && one.on('callback', callback)
             one.send(param)
             return one
         }
 
         // promise
         fetch(opt) {
-            return this.create(opt).send().then()
+            return this.create(opt)
+                .send()
+                .then()
         }
 
         setDate(date) {
-            if (typeof date == "string") {
-                date = new Date(date.replace(/T/, " ").replace(/\.\d+$/, ""))
+            if (typeof date == 'string') {
+                date = new Date(date.replace(/T/, ' ').replace(/\.\d+$/, ''))
             }
             if (date && date.getTime()) {
                 this.dateDiff = ajaxDateDiff = date.getTime() - new Date().getTime()
@@ -1004,14 +1019,14 @@
     // 用于生成快捷方法
     function shortcut(type) {
         return (AjaxGroup.prototype[type] = function() {
-            return this.load.apply(this, arguments).setConf({method: type})
+            return this.load.apply(this, arguments).setConf({ method: type })
         })
     }
 
-    shortcut("get")
-    shortcut("post")
-    shortcut("put")
-    shortcut("jsonp")
+    shortcut('get')
+    shortcut('post')
+    shortcut('put')
+    shortcut('jsonp')
 
     // 一个分组
     let val = new AjaxGroup()
