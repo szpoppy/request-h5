@@ -1029,7 +1029,7 @@
     shortcut('jsonp')
 
     // 一个分组
-    let val = new AjaxGroup()
+    let val = AjaxGroup.create()
     // 全局
     val.global = theGlobal
     // 分组类
