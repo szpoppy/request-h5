@@ -893,11 +893,7 @@
         then(thenFn) {
             let pse = new Promise((resolve, reject) => {
                 this.on('callback', function(res) {
-                    if (res.err) {
-                        reject(res)
-                    } else {
-                        resolve(res)
-                    }
+                    resolve(res)
                 })
                 this.on('timeout', function() {
                     reject({ err: '访问超时', errType: 1 })
@@ -969,6 +965,13 @@
         // 创建一个ajax
         create(opt) {
             return new Ajax(this, opt)
+        }
+
+        // 快捷函数
+        shortcut(opt) {
+            return (callback, param) => {
+                return this.load(opt, callback, param)
+            }
         }
 
         // 创建并加载
