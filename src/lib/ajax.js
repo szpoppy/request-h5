@@ -20,12 +20,12 @@
     let hasFetch = !!window.fetch
 
     // ============================================ 事件函数
-    function onEvent(type, fn) {
+    function onEvent(type, fn, isPre = false) {
         let evs = this.events[type]
         if (!evs) {
             evs = this.events[type] = []
         }
-        evs.push(fn)
+        evs[isPre ? 'unshift' : 'push'](fn)
         return this
     }
 
@@ -968,9 +968,15 @@
         }
 
         // 快捷函数
-        shortcut(opt) {
+        shortcut(opt, events = {}) {
             return (callback, param) => {
-                return this.load(opt, callback, param)
+                let one = this.load(opt, callback, param)
+                for (let n in events) {
+                    if (hasOwnProperty.call(events, n)) {
+                        one.on(n, events[n], true)
+                    }
+                }
+                return one
             }
         }
 
