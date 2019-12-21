@@ -934,15 +934,37 @@
     // ======================================================
     // ajax群组
     function newGroup(opt) {
-        opt.dateDiff = ajaxDateDiff
-        opt.conf = {}
-        opt.events = {}
+        // 服务器时间差
+        this.dateDiff = ajaxDateDiff
+        // 分组默认配置项
+        this.conf = {}
+        // 分区事件
+        this.events = {}
+        opt && this.setConf(opt)
+    }
+    function load(url, callback, param, onNew) {
+        let opt = url
+        if (typeof url == 'string') {
+            opt = {
+                url: url
+            }
+        }
+
+        if (callback && typeof callback != 'function') {
+            param = callback
+            callback = null
+        }
+
+        let one = new Ajax(this, opt)
+        onNew && onNew(one)
+        callback && one.on('callback', callback)
+        one.send(param)
+        return one
     }
     class AjaxGroup {
         // paths 为短路径
         constructor(opt) {
-            newGroup(this)
-            opt && this.setConf(opt)
+            newGroup.call(this, opt)
         }
 
         static create(fn) {
@@ -952,7 +974,7 @@
                 }
             }
             Object.setPrototypeOf(fn, AjaxGroup.prototype)
-            newGroup(fn)
+            newGroup.call(fn)
             return fn
         }
 
@@ -970,34 +992,19 @@
         // 快捷函数
         shortcut(opt, events = {}) {
             return (callback, param) => {
-                let one = this.load(opt, callback, param)
-                for (let n in events) {
-                    if (hasOwnProperty.call(events, n)) {
-                        one.on(n, events[n], true)
+                return load.call(this, opt, callback, param, function(one) {
+                    for (let n in events) {
+                        if (hasOwnProperty.call(events, n)) {
+                            one.on(n, events[n])
+                        }
                     }
-                }
-                return one
+                })
             }
         }
 
         // 创建并加载
         load(url, callback, param) {
-            let opt = url
-            if (typeof url == 'string') {
-                opt = {
-                    url: url
-                }
-            }
-
-            if (callback && typeof callback != 'function') {
-                param = callback
-                callback = null
-            }
-
-            let one = new Ajax(this, opt)
-            callback && one.on('callback', callback)
-            one.send(param)
-            return one
+            return load.call(this, url, callback, param)
         }
 
         // promise

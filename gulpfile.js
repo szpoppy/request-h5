@@ -1,32 +1,28 @@
-const gulp = require('gulp');
-const plugin = require('gulp-load-plugins')();
+const gulp = require('gulp')
+const plugin = require('gulp-load-plugins')()
 
 // sourcemap
 let sourcemapFlag = false
 function sourcemapsInit() {
-    return plugin.if(sourcemapFlag, plugin.sourcemaps.init());
+    return plugin.if(sourcemapFlag, plugin.sourcemaps.init())
 }
 
 function sourcemapsWrite() {
-    return plugin.if(sourcemapFlag, plugin.sourcemaps.write());
+    return plugin.if(sourcemapFlag, plugin.sourcemaps.write())
 }
 
 // es6 转换
 function babel() {
     return plugin.babel({
-        'presets': [
-            'stage-0', 'env'
-        ],
-        'plugins': [
-            "transform-export-extensions"
-        ],
-        'comments': false
-    });
+        presets: ['stage-0', 'env'],
+        plugins: ['transform-export-extensions'],
+        comments: false
+    })
 }
 
 // uglify 压缩
 function uglify() {
-    return plugin.uglify();
+    return plugin.uglify()
 }
 
 // 压缩css
@@ -34,7 +30,7 @@ function cleanCss() {
     return plugin.cleanCss({
         compatibility: 'ie8',
         rebase: false
-    });
+    })
 }
 
 // CSS 自动加上css前缀
@@ -46,18 +42,18 @@ function autoprefixer() {
 }
 
 // 图片压缩
-const pngquant = require('imagemin-pngquant');
+const pngquant = require('imagemin-pngquant')
 
 function imagemin() {
     return plugin.imagemin({
         progressive: true,
-        svgoPlugins: [{
-            removeViewBox: false
-        }],
-        use: [
-            pngquant()
-        ]
-    });
+        svgoPlugins: [
+            {
+                removeViewBox: false
+            }
+        ],
+        use: [pngquant()]
+    })
 }
 
 // html 压缩
@@ -71,7 +67,7 @@ function htmlmin(minify) {
         removeStyleLinkTypeAttributes: true, //删除<style>和<link>的type="text/css"
         minifyJS: minify || false, //压缩页面JS
         minifyCSS: minify || false //压缩页面CSS
-    });
+    })
 }
 
 // 全局gulp配置
@@ -88,23 +84,20 @@ function gulpDest(src) {
 // 通用任务生成
 function runTask() {
     var arg = Array.prototype.slice.call(arguments)
-    var src = arg.shift();
+    var src = arg.shift()
     var handle = gulp.src(src, { base: gulpBase })
-        // gulp 补丁，报错不退出
-    arg.unshift(plugin.plumber());
     // 目录输出
-    var build;
-    arg.push(gulp.dest(gulpDest()));
+    var build
+    arg.push(gulp.dest(gulpDest()))
     //console.log('src:', src, 'build:', build);
     while (arg.length) {
-        handle = handle.pipe(arg.shift());
+        handle = handle.pipe(arg.shift())
     }
-    return handle;
-
+    return handle
 }
 
 // js 编译压缩
-const jsSrc = [gulpSrc('/**/*.js'), '!' + gulpSrc('/**/*.min.js')];
+const jsSrc = [gulpSrc('/**/*.js'), '!' + gulpSrc('/**/*.min.js')]
 gulp.task('js', function() {
     runTask(
         jsSrc,
@@ -117,7 +110,7 @@ gulp.task('js', function() {
 })
 
 // Less
-const lessSrc = [gulpSrc('/**/*.less'), '!' + gulpSrc('/**/_*.less')];
+const lessSrc = [gulpSrc('/**/*.less'), '!' + gulpSrc('/**/_*.less')]
 gulp.task('less', function() {
     runTask(
         lessSrc,
@@ -129,10 +122,10 @@ gulp.task('less', function() {
         cleanCss(),
         sourcemapsWrite()
     )
-});
+})
 
 // CSS 压缩
-const cssSrc = [gulpSrc('/**/*.css'), '!' + gulpSrc('/**.*.min.css')];
+const cssSrc = [gulpSrc('/**/*.css'), '!' + gulpSrc('/**.*.min.css')]
 gulp.task('css', function() {
     runTask(
         cssSrc,
@@ -142,19 +135,16 @@ gulp.task('css', function() {
         cleanCss(),
         sourcemapsWrite()
     )
-});
+})
 
 // html 压缩和执行tpl
 var htmlSrc = [gulpSrc('/**/*.html')]
 gulp.task('html', function() {
-    runTask(
-        htmlSrc,
-        htmlmin(true)
-    )
+    runTask(htmlSrc, htmlmin(true))
 })
 
 // 图片压缩
-const imgSrc = [gulpSrc('/**/*.{png,jpg,gif,ico}')];
+const imgSrc = [gulpSrc('/**/*.{png,jpg,gif,ico}')]
 gulp.task('img', function() {
     runTask(
         imgSrc,
@@ -163,11 +153,11 @@ gulp.task('img', function() {
         }),
         imagemin()
     )
-});
+})
 
 // 拷贝其他不处理的文件
-const copyExt = 'swf,min.js,min.css,otf,eof,svg,ttf,woff,woff2,json';
-const copySrc = [gulpSrc('/**/*.{' + copyExt + '}')];
+const copyExt = 'swf,min.js,min.css,otf,eof,svg,ttf,woff,woff2,json'
+const copySrc = [gulpSrc('/**/*.{' + copyExt + '}')]
 
 gulp.task('copy', function() {
     runTask(
@@ -177,22 +167,22 @@ gulp.task('copy', function() {
         }),
         imagemin()
     )
-});
+})
 
 gulp.task('watch', function() {
-    gulp.watch(jsSrc, ['js']);
-    gulp.watch(lessSrc, ['less']);
-    gulp.watch(cssSrc, ['css']);
-    gulp.watch(imgSrc, ['img']);
-    gulp.watch(htmlSrc, ['html']);
-    gulp.watch(copySrc, ['copy']);
-});
+    gulp.watch(jsSrc, ['js'])
+    gulp.watch(lessSrc, ['less'])
+    gulp.watch(cssSrc, ['css'])
+    gulp.watch(imgSrc, ['img'])
+    gulp.watch(htmlSrc, ['html'])
+    gulp.watch(copySrc, ['copy'])
+})
 
-// 执行所有任务 , 'html-share' 
-gulp.task('build', plugin.sequence(['img', 'js'], ['less', 'css'], ['html', 'copy']));
+// 执行所有任务 , 'html-share'
+gulp.task('build', plugin.sequence(['img', 'js'], ['less', 'css'], ['html', 'copy']))
 
 //默认
 gulp.task('default', function(cb) {
-    plugin.express.run(['bin/www']);
-    plugin.sequence(['build'], ['watch'], cb);
-});
+    plugin.express.run(['bin/www'])
+    plugin.sequence(['build'], ['watch'], cb)
+})
