@@ -990,12 +990,18 @@
         }
 
         // 快捷函数
-        shortcut(opt, events = {}) {
+        shortcut(opt, events) {
             return (callback, param) => {
                 return load.call(this, opt, callback, param, function(one) {
-                    for (let n in events) {
-                        if (hasOwnProperty.call(events, n)) {
-                            one.on(n, events[n])
+                    if (events) {
+                        if (typeof events == 'function') {
+                            one.on('callback', events)
+                            return
+                        }
+                        for (let n in events) {
+                            if (hasOwnProperty.call(events, n)) {
+                                one.on(n, events[n])
+                            }
                         }
                     }
                 })
